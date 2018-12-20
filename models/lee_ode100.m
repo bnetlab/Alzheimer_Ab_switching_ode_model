@@ -1,4 +1,5 @@
 function dA_dt=lee_ode100(t,A,n,theta)
+
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % Defines the set of ODEs to be solved to simulate insulin fibrillation %
 % A(1~n-1) is the vector of i-mer concentrations (i=1~n-1) %
