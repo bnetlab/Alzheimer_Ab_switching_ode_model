@@ -59,9 +59,9 @@ Y0=zeros(1,n);
 Y0(1)=A_1;
 Y0(n)=Eeff;
 % Y0(12)=5e-6;
-t_range=linspace(0,49,49); 
+t_range=linspace(0,48,48); 
 [t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge,t_range,Y0,[],n,theta);
-Y_val([1:1:49],[1 2 4 12 13 14 18 21  25 26 27])
+Y_val([1:1:48],[1 2 4 12 13 14 18 21  25 26 27])
 
 %claculate signal
 signalON=Y_val(:,n)*0;
@@ -70,7 +70,7 @@ signalOFF=Y_val(:,n)*0;
 for i=2:11
 signalON=signalON + Y_val(:,i)*i;
 end
-signalON=signalON + Y_val(:,12)*20000;
+signalON=signalON + Y_val(:,12)*10000;
 
 for i=13:20
 signalOFF=signalOFF + Y_val(:,i).*(i-9);
@@ -95,6 +95,6 @@ plot(X(:,1), X(:,2),'--*g')
 xlabel('Time')
 ylabel('Normalized ThT')
 
-fitlm(signal(2:end),X([1:6:end],2))
+fitlm(signal(1:end),X([1:6:end],2))
 
           
