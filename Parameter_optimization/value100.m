@@ -10,11 +10,11 @@ Data(:,2)= (Data(:,2)-min(Data(:,2)))/(max(Data(:,2))-min(Data(:,2)));
 
 %simulation
 n=12;
-aon=2e-4;
+aon=0.2e-3;
 bon=1e-4;
-con=1e3;
+con=1e-6;
 don=1e-6;
-Z0=1;
+%Z0=1;
 
 A_1=0.25;
 theta0=[aon,bon,con,don]; 
@@ -37,7 +37,9 @@ plot(Data(:,1),Data(:,2),'-*')
 myObjective = @(theta) objFcn(t_range,Y0,n,theta,Data);
 lb = 1e-6*ones(size(theta0));
 ub = 1e6*ones(size(theta0));
-besttheta = lsqnonlin(myObjective, theta0, lb, ub);
+%besttheta = lsqnonlin(myObjective, theta0, lb, ub);
+besttheta = fmincon(myObjective, theta0,[],[],[],[], lb, ub);
+
 
 % Plot best result
 [t_val,Y_val]=ode23s(@lee_ode100,t_range,Y0,[],n,besttheta);
@@ -65,4 +67,9 @@ for i=2:n
 signalON=signalON + Y_val(:,i).*i;
 end
 signalON = (signalON - min(signalON))/(max(signalON) - min(signalON));
-cost = signalON-Data([1:6:145],2);
+cost = sum(abs(signalON-Data([1:6:145],2)));
+theta
+cost
+
+% md1 = fitlm(signalON,Data([1:6:145],2));
+% cost=md1.RMSE
