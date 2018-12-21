@@ -95,6 +95,9 @@ plot(X(:,1), X(:,2),'--*g')
 xlabel('Time')
 ylabel('Normalized ThT')
 
-fitlm(signal(1:end),X([1:6:end],2))
+md=fitlm(signal(1:end),X([1:6:end],2))
+
+
+
 
           
