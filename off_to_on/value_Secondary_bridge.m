@@ -6,7 +6,7 @@ n=27;
 % on pathway rate constant
 aon=30e-2;
 bon=1e-4;
-con=2e4;
+con=2e3;
 don=1e-6;
 
 %off pathway rate constant
@@ -59,7 +59,7 @@ Y0=zeros(1,n);
 Y0(1)=A_1;
 Y0(n)=Eeff;
 % Y0(12)=5e-6;
-t_range=linspace(0,44,45); 
+t_range=linspace(0,46,47); 
 [t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge,t_range,Y0,[],n,theta);
 Y_val([1:1:25],[1 2 4 12 13 14 18 21  25 26 27])
 
@@ -83,7 +83,7 @@ end
 signalOFF=signalOFF+ 18*Y_val(:,21)+36*Y_val(:,22)+54*Y_val(:,23)+72*Y_val(:,24)+18*Y_val(:,25);
 
 signal=signalON+signalOFF;
-signal = (signal - signal(25))/(max(signal) - signal(25));
+signal = (signal - min(signal))/(max(signal) - min(signal));
 %signal(signal(:)<0)=0;
 
 %plot
@@ -91,13 +91,16 @@ signal = (signal - signal(25))/(max(signal) - signal(25));
 plot(t_range, signal, '-r', 'LineWidth',2)
 hold on
 num=xlsread('On & Of Pathway transition data.xlsx');
-X=num(1:246,[1,5]);
-X(:,2)= (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2)));
+X=num(1:120,[1,2]);
+X(:,1)=X(:,1)+24;
+X(:,2)=X(:,2)+1;
+%X(:,2)= (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2)));
+X(:,2)=X(:,2)/max(X(:,2));
 plot(X(:,1), X(:,2),'--*g')
 xlabel('Time')
 ylabel('Normalized ThT')
 
-%md=fitlm(signal(1:end),X([1:6:end],2))
+%md=fitlm(signal(25:end),X([1:6:end],2))
 
 
 
