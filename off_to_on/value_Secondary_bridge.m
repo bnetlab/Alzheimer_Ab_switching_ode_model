@@ -2,11 +2,14 @@
 % with perterbation
 
 % Fit off-pathway only
+perS=5;
+perE=24;
+dilu=10;
 
 %parameter
 n=27;
 % on pathway rate constant
-aon=15e-2;
+aon=60e-2;
 bon=1e-4;
 con=2e4;
 don=1e-6;
@@ -61,10 +64,21 @@ Y0=zeros(1,n);
 Y0(1)=A_1;
 Y0(n)=Eeff;
 % Y0(12)=5e-6;
-t_range=linspace(0,20,21); 
-[t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge,t_range,Y0,[],n,theta);
-Y_val([1:1:20],[1 2 4 12 13 14 18 21  25 26 27])
+t_range1=linspace(0,perS,perS+1); 
+[t_val,Y_val1]=ode23s(@lee_ode_Secondary_bridge,t_range1,Y0,[],n,theta);
 
+
+Y0=Y_val1(end,:)';
+Y0=Y0/dilu;
+Y0(1)=Y0(1)+0.25;
+t_range2=linspace(0,perE-perS, perE-perS+1)
+[t_val,Y_val2]=ode23s(@lee_ode_Secondary_bridge_on,t_range2,Y0,[],n,theta);
+
+Y_val=[Y_val1;Y_val2];
+t_range2=t_range2+perS;
+t_range=[t_range1 t_range2];
+
+Y_val([1:1:perE],[1 2 12 13  21  26 27])
 %claculate signal
 signalON=Y_val(:,n)*0;
 signalOFF=Y_val(:,n)*0;
@@ -93,10 +107,10 @@ signal = (signal - min(signal))/(max(signal) - min(signal));
 plot(t_range, signal, '-r', 'LineWidth',2)
 hold on
 num=xlsread('On & Of Pathway transition data.xlsx');
-X=num(1:120,[1,2]);
+X=num(1:136,[1,4]);
 X(:,1)=X(:,1);
 X(:,2)=X(:,2);
-X(X(:,2)>0.1,2)=0.09;
+%X(X(:,2)>0.1,2)=0.09;
 %X(:,2)= (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2)));
 X(:,2)=X(:,2)/max(X(:,2));
 plot(X(:,1), X(:,2),'--*g')
