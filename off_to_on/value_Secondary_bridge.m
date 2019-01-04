@@ -2,20 +2,20 @@
 % with perterbation
 
 % Fit off-pathway only
-perS=5;
-perE=24;
-dilu=10;
+perS=24;
+perE=40;
+dilu=5;
 
 %parameter
 n=27;
 % on pathway rate constant
-aon=60e-2;
+aon=40e-2;
 bon=1e-4;
 con=2e4;
 don=1e-6;
 
 %off pathway rate constant
-x=10e-1;
+x=1e-1;
 y =1e-2;
 z=150e-1;
 zz=1e-2; 
@@ -99,20 +99,22 @@ end
 signalOFF=signalOFF+ 18*Y_val(:,21)+36*Y_val(:,22)+54*Y_val(:,23)+72*Y_val(:,24)+18*Y_val(:,25);
 
 signal=signalON+signalOFF;
+signal=signal(perS+1:end);
 signal = (signal - min(signal))/(max(signal) - min(signal));
+%signal = (signal - signal(perS))/(max(signal) - min(perS));
 %signal(signal(:)<0)=0;
 
 %plot
 
-plot(t_range, signal, '-r', 'LineWidth',2)
+plot(t_range(perS+1:end), signal, '-r', 'LineWidth',2)
 hold on
 num=xlsread('On & Of Pathway transition data.xlsx');
-X=num(1:136,[1,4]);
+X=num(1:224,[1,6]);
 X(:,1)=X(:,1);
 X(:,2)=X(:,2);
 %X(X(:,2)>0.1,2)=0.09;
 %X(:,2)= (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2)));
-X(:,2)=X(:,2)/max(X(:,2));
+X(:,2)=(X(:,2)-min(X(:,2)))/(max(X(:,2))-min(X(:,2)));
 plot(X(:,1), X(:,2),'--*g')
 xlabel('Time')
 ylabel('Normalized ThT')

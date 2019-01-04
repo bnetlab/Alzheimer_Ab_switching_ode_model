@@ -4,17 +4,17 @@
 %parameter
 n=27;
 % on pathway rate constant
-aon=2e-2;
+aon=2.2e-2;
 bon=1e-4;
 con=1e1;
 don=1e-6;
 
 %off pathway rate constant
-x=150e-1;
+x=50e-1;
 y =1e-2;
 z=200e-1;
 zz=1e-2; 
-r1=7e3;
+r1=6e2;
 s1=2e-1;
 f1=1e0;
 f2=5e-3;
@@ -22,8 +22,8 @@ p1=5e3;
 p2=6e-1;
 
 %bridge rate constant
-swiF=0.20e0;
-swiB=7e0;
+swiF=0;
+swiB=0;
 
 %fatty acid concentration
 Ecrt=.07e3;
