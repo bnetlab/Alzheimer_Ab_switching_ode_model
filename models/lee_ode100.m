@@ -13,15 +13,15 @@ Jnu=zeros(size(A)); % Flux of i-th nucleation reaction
 Jfb=zeros(size(A)); % Flux of i-th fibrillation reaction
 % The following is the list of rate constants % Forward rate constant of insulin hexamer dissociation
 knu=ones(n,1)*theta(1); % First foward nucleation rate constants
-for i=1:n-1
- knu(i)=theta(1)/2*(1+i^(-1/3)); % Correct knu(i) by Stokes-Einstein Eq.
-end
+% for i=1:n-1
+%  knu(i)=theta(1)/2*(1+i^(-1/3)); % Correct knu(i) by Stokes-Einstein Eq.
+% end
 knu_=ones(n,1)*theta(2); % Reverse nucleation constants
 knu_(11)=0;
 kfb=ones(n,1)*theta(3); % First forward fibrillation rate constant
-for i=1:n-1
- kfb(i)=theta(2)*i^(-1/3); % Correct kfb(i) by Stokes-Einstein Eq.
-end
+% for i=1:n-1
+%  kfb(i)=theta(2)*i^(-1/3); % Correct kfb(i) by Stokes-Einstein Eq.
+% end
 kfb_=ones(n,1)*theta(4); % Reverse fibrillation rate constant
 % Definitions of reaction fluxes Jhex, Jnu, and Jfb % The flux of hexamer decomposition reaction
 
