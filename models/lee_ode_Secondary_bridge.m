@@ -2,7 +2,7 @@
 function dA_dt=lee_ode_Secondary_bridge(t,A,n,theta)
 dA_dt=zeros(size(A));
 % ODE for on pathway
-if (t<25)    
+if (t<24)    
  % First order derivatives of i-mer concentrations
 Jnu=zeros(size(A)); % Flux of i-th nucleation reaction 
 Jfb=zeros(size(A)); % Flux of i-th fibrillation reaction
@@ -12,6 +12,7 @@ knu=ones(n,1)*theta(1); % First foward nucleation rate constants
 %  knu(i)=theta(1)/2*(1+i^(-1/3)); % Correct knu(i) by Stokes-Einstein Eq.
 % end
 knu_=ones(n,1)*theta(2); % Reverse nucleation constants
+knu_(11)=0;
 kfb=ones(n,1)*theta(3); % First forward fibrillation rate constant
 % for i=1:n-1
 %  kfb(i)=theta(2)*i^(-1/3); % Correct kfb(i) by Stokes-Einstein Eq.
@@ -37,7 +38,7 @@ end
 end
 
 % ODE for combime on-off pathway
-if (t>=25)
+if (t>=24)
 Jonnu=zeros(size(A));
 Jonfb=zeros(size(A));
 Joffnu=zeros(size(A));
@@ -48,7 +49,8 @@ konnu=theta(1); % First foward nucleation rate constants
 % for i=1:n-1
 % knu(i)=theta(1)/2*(1+i^(-1/3)); % Correct knu(i) by Stokes-Einstein Eq.
 % end
-konnu_=theta(2); % Reverse nucleation constants
+konnu_=ones(n,1)*theta(2); % Reverse nucleation constants
+konnu_(11)=0;
 konfb=theta(3); % First forward fibrillation rate constant
 % for i=1:n-1
 %  kfb(i)=theta(2)*i^(-1/3); % Correct kfb(i) by Stokes-Einstein Eq.
@@ -71,7 +73,7 @@ kSwitch_=theta(16);
 
 
 for i=1:11
- Jonnu(i)=konnu*A(1)*A(i)-konnu_*A(i+1); % The flux of i-mer nucleation rxn
+ Jonnu(i)=konnu*A(1)*A(i)-konnu_(i)*A(i+1); % The flux of i-mer nucleation rxn
  Jonfb(i)=konfb*A(12)*A(i)-konfb_*A(12); % The flux of i-mer elongation rxn
 end
 

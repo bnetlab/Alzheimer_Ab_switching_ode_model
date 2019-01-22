@@ -4,26 +4,37 @@
 %parameter
 n=27;
 % on pathway rate constant
-aon=2e-2;
-bon=1e-4;
-con=1e1;
-don=1e-6;
+aon=0.03;
+bon=0.025;
+con=0.35e5;
+don=1e-3;
 
 %off pathway rate constant
-x=50e-1;
-y =1e-2;
-z=150e-1;
+% x=500e-1;
+% y =1e-2;
+% z=600e-1;
+% zz=1e-2; 
+% r1=1e6;
+% s1=2e-1;
+% f1=1e3;
+% f2=5e-3;
+% p1=5e4;
+% p2=6e-1;
+
+x=10000e-1;
+y =0e-1;
+z=400e-1;
 zz=1e-2; 
 r1=1e4;
 s1=2e-1;
-f1=1e0;
+f1=1e1;
 f2=5e-3;
 p1=5e3;
 p2=6e-1;
 
 %bridge rate constant
-swiF=0.20e0;
-swiB=6e0;
+swiF=0.20e3;
+swiB=6e-2;
 
 %fatty acid concentration
 Ecrt=.07e3;
@@ -57,32 +68,30 @@ end
 theta=[aon,bon,con,don,x,y,z,zz,r1,s1,f1,f2,p1,p2,swiF,swiB]; 
 Y0=zeros(1,n); 
 Y0(1)=A_1;
+Y0(12)=0.000001;
 Y0(n)=Eeff;
 % Y0(12)=5e-6;
 t_range=linspace(0,48,48); 
 [t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge,t_range,Y0,[],n,theta);
-Y_val([1:1:48],[1 2 4 12 13 14 18 21  25 26 27])
+Y_val([1:1:48],[1 2 4 12 13  21  25 26 27])
 
 %claculate signal
 signalON=Y_val(:,n)*0;
 signalOFF=Y_val(:,n)*0;
 
-for i=2:11
-signalON=signalON + Y_val(:,i)*i;
-end
-signalON=signalON + Y_val(:,12)*10000;
+% for i=2:11
+% signalON=signalON + Y_val(:,i)*i;
+% end
+signalON=signalON + Y_val(:,12)*90000000;
 
-for i=13:20
-signalOFF=signalOFF + Y_val(:,i).*(i-9);
-end
+% for i=13:20
+% signalOFF=signalOFF + Y_val(:,i).*(i-9);
+% end
 
-for i=13:20
-signalOFF=signalOFF + Y_val(:,i).*(i-9);
-end
+%signalOFF=signalOFF+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
+signalOFF=18*Y_val(:,26);
 
-signalOFF=signalOFF+ 18*Y_val(:,21)+36*Y_val(:,22)+54*Y_val(:,23)+72*Y_val(:,24)+18*Y_val(:,25);
-
-signal=signalON+signalOFF;
+signal=signalON+signalOFF-signalON(1);
 signal = (signal - min(signal))/(max(signal) - min(signal));
 
 %plot
