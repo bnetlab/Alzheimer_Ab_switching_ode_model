@@ -21,9 +21,9 @@ don=1e-3;
 % p1=5e4;
 % p2=6e-1;
 
-x=10000e-1;
+x=1000e-1;
 y =0e-1;
-z=400e-1;
+z=800e-1;
 zz=1e-2; 
 r1=1e4;
 s1=2e-1;
@@ -33,7 +33,7 @@ p1=5e3;
 p2=6e-1;
 
 %bridge rate constant
-swiF=0.20e3;
+swiF=1e6;
 swiB=6e-2;
 
 %fatty acid concentration
@@ -93,6 +93,18 @@ signalOFF=18*Y_val(:,26);
 
 signal=signalON+signalOFF-signalON(1);
 signal = (signal - min(signal))/(max(signal) - min(signal));
+
+oCon= 0;
+for i=2:11
+oCon= oCon + Y_val(:,i)*i;
+end
+for i=13:21
+oCon= oCon + Y_val(:,i)*(i-9);
+end
+oCon=oCon+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
+aCon=Y_val(:,1);
+ratio=oCon./aCon;
+ratio(end)
 
 %plot
 
