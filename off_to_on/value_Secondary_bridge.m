@@ -2,9 +2,9 @@
 % with perterbation
 
 % Fit off-pathway only
-perS=24;
-perE=40;
-dilu=5;
+perS=42;
+% perE=43;
+% dilu=5;
 
 %parameter
 n=27;
@@ -15,13 +15,13 @@ con=2e4;
 don=1e-6;
 
 %off pathway rate constant
-x=1e-1;
+x=1000e-1;
 y =1e-2;
-z=150e-1;
+z=800e-1;
 zz=1e-2; 
 r1=1e4;
 s1=1e-1;
-f1=1e0;
+f1=1e1;
 f2=5e-3;
 p1=5e3;
 p2=6e-1;
@@ -65,59 +65,63 @@ Y0(1)=A_1;
 Y0(n)=Eeff;
 % Y0(12)=5e-6;
 t_range1=linspace(0,perS,perS+1); 
-[t_val,Y_val1]=ode23s(@lee_ode_Secondary_bridge,t_range1,Y0,[],n,theta);
+[t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge,t_range1,Y0,[],n,theta);
 
 
-Y0=Y_val1(end,:)';
-Y0=Y0/dilu;
-Y0(1)=Y0(1)+0.25;
-t_range2=linspace(0,perE-perS, perE-perS+1)
-[t_val,Y_val2]=ode23s(@lee_ode_Secondary_bridge_on,t_range2,Y0,[],n,theta);
-
-Y_val=[Y_val1;Y_val2];
-t_range2=t_range2+perS;
-t_range=[t_range1 t_range2];
-
-Y_val([1:1:perE],[1 2 12 13  21  26 27])
+% Y0=Y_val1(end,:)';
+% Y0=Y0/dilu;
+% Y0(1)=Y0(1)+0.25;
+% t_range2=linspace(0,perE-perS, perE-perS+1)
+% [t_val,Y_val2]=ode23s(@lee_ode_Secondary_bridge_on,t_range2,Y0,[],n,theta);
+% 
+% Y_val=[Y_val1;Y_val2];
+% t_range2=t_range2+perS;
+% t_range=[t_range1 t_range2];
+% 
+% Y_val([1:1:perE],[1 2 12 13  21  26 27])
 %claculate signal
 signalON=Y_val(:,n)*0;
 signalOFF=Y_val(:,n)*0;
 
-for i=2:11
-signalON=signalON + Y_val(:,i)*i;
-end
+% for i=2:11
+% signalON=signalON + Y_val(:,i)*i;
+% end
 signalON=signalON + Y_val(:,12)*10000;
 
-for i=13:20
-signalOFF=signalOFF + Y_val(:,i).*(i-9);
-end
+% for i=13:20
+% signalOFF=signalOFF + Y_val(:,i).*(i-9);
+% end
 
-for i=13:20
-signalOFF=signalOFF + Y_val(:,i).*(i-9);
-end
+% for i=13:20
+% signalOFF=signalOFF + Y_val(:,i).*(i-9);
+% end
 
-signalOFF=signalOFF+ 18*Y_val(:,21)+36*Y_val(:,22)+54*Y_val(:,23)+72*Y_val(:,24)+18*Y_val(:,25);
-
+signalOFF=signalOFF+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
 signal=signalON+signalOFF;
-signal=signal(perS+1:end);
+% signal=signal(perS+1:end);
 signal = (signal - min(signal))/(max(signal) - min(signal));
 %signal = (signal - signal(perS))/(max(signal) - min(perS));
 %signal(signal(:)<0)=0;
 
 %plot
 
-plot(t_range(perS+1:end), signal, '-r', 'LineWidth',2)
+%plot(t_range(perS+1:end), signal, '-r', 'LineWidth',2)
+plot(t_val, signal, '-r', 'LineWidth',2)
 hold on
-num=xlsread('On & Of Pathway transition data.xlsx');
-X=num(1:224,[1,6]);
-X(:,1)=X(:,1);
-X(:,2)=X(:,2);
-%X(X(:,2)>0.1,2)=0.09;
-%X(:,2)= (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2)));
-X(:,2)=(X(:,2)-min(X(:,2)))/(max(X(:,2))-min(X(:,2)));
-plot(X(:,1), X(:,2),'--*g')
-xlabel('Time')
-ylabel('Normalized ThT')
+
+% num=xlsread('On & Of Pathway transition data.xlsx');
+% X=num(1:224,[1,6]);
+% X(:,1)=X(:,1);
+% X(:,2)=X(:,2);
+% %X(X(:,2)>0.1,2)=0.09;
+% %X(:,2)= (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2)));
+% X(:,2)=(X(:,2)-min(X(:,2)))/(max(X(:,2))-min(X(:,2)));
+% plot(X(:,1), X(:,2),'--*g')
+% xlabel('Time')
+% ylabel('Normalized ThT')
+
+num=xlsread('OFF TO ON.xlsx');
+plot(num(:,1), (num(:,2)-min(num(:,2)))/(max(num(:,2))-min(num(:,2))),'--*g');
 
 %md=fitlm(signal(25:end),X([1:6:end],2))
 
