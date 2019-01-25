@@ -2,16 +2,16 @@
 % with perterbation
 
 % Fit off-pathway only
-perS=24;
-perE=42;
+perS=5;
+perE=40;
 dilu=5;
 
 %parameter
 n=27;
 % on pathway rate constant
-aon=0.03;
+aon=0.5;
 bon=0.025;
-con=0.35e5;
+con=0.55e6;
 don=1e-3;
 
 %off pathway rate constant
@@ -27,7 +27,7 @@ p1=5e3;
 p2=6e-1;
 
 %bridge rate constant
-swiF=6e5;
+swiF=5e-2;
 swiB=1e-3;
 
 %fatty acid concentration
@@ -68,6 +68,7 @@ t_range1=linspace(0,perS,perS+1);
 [t_val,Y_val1]=ode23s(@lee_ode_Secondary_bridge,t_range1,Y0,[],n,theta);
 
 
+theta=[aon,bon,con,don,x,y,z,zz,r1,s1,f1,f2,p1,p2,swiF,swiB]; 
 Y0=Y_val1(end,:)';
 Y0=Y0/dilu;
 Y0(1)=Y0(1)+0.25;
@@ -78,7 +79,7 @@ Y_val=[Y_val1;Y_val2];
 t_range2=t_range2+perS;
 t_range=[t_range1 t_range2];
 
-Y_val([1:1:perE],[1 2 12 13  21  26 27])
+Y_val([1:1:perE],[1 4 12 13  21  26 27])
 
 Y_val=[Y_val1;dilu.*Y_val2];
 %claculate signal
@@ -88,7 +89,7 @@ signalOFF=Y_val(:,n)*0;
 % for i=2:11
 % signalON=signalON + Y_val(:,i)*i;
 % end
-signalON=signalON + Y_val(:,12)*150000;
+signalON=signalON + Y_val(:,12)*50000;
 
 % for i=13:20
 % signalOFF=signalOFF + Y_val(:,i).*(i-9);
@@ -108,7 +109,7 @@ signal = (signal - min(signal))/(max(signal) - min(signal));
 %plot
 
 %plot(t_range(perS+1:end), signal, '-r', 'LineWidth',2)
-plot(t_range, signal, '-r', 'LineWidth',2)
+plot(t_range, signal, '-b', 'LineWidth',2)
 hold on
 
 % num=xlsread('On & Of Pathway transition data.xlsx');
@@ -123,7 +124,16 @@ hold on
 % ylabel('Normalized ThT')
 
 num=xlsread('OFF TO ON.xlsx');
-plot(num(:,1), (num(:,4)-min(num(:,4)))/(max(num(:,4))-min(num(:,4))),'--*g');
+plot(num(:,1), 1.1*(num(:,3)-min(num(:,3)))/(max(num(:,3))-min(num(:,3))),'gs',...
+    'LineWidth',2,...
+    'MarkerSize',10,...
+    'MarkerEdgeColor','b',...
+    'MarkerFaceColor',[0.5,0.5,0.5]);
+% plot(num(:,1), (num(:,4)-min(num(:,4)))/(max(num(:,4))-min(num(:,4))),'gs',...
+%     'LineWidth',2,...
+%     'MarkerSize',10,...
+%     'MarkerEdgeColor','g',...
+%     'MarkerFaceColor',[0.25,0.25,0.25]);
 
 %md=fitlm(signal(25:end),X([1:6:end],2))
 
