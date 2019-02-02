@@ -5,6 +5,7 @@
 perS=5;
 perE=40;
 dilu=5;
+tht=100;
 
 %parameter
 n=27;
@@ -15,9 +16,9 @@ con=0.55e6;
 don=1e-3;
 
 %off pathway rate constant
-x=1000e-1;
+x=100e-1;
 y =1e-2;
-z=800e-1;
+z=40e-1;
 zz=1e-2; 
 r1=1e4;
 s1=1e-1;
@@ -89,7 +90,7 @@ signalOFF=Y_val(:,n)*0;
 % for i=2:11
 % signalON=signalON + Y_val(:,i)*i;
 % end
-signalON=signalON + Y_val(:,12)*50000;
+signalON=signalON + Y_val(:,12)*tht;
 
 % for i=13:20
 % signalOFF=signalOFF + Y_val(:,i).*(i-9);
@@ -123,13 +124,13 @@ hold on
 % xlabel('Time')
 % ylabel('Normalized ThT')
 
-num=xlsread('OFF TO ON.xlsx');
+num=xlsread('off_on_final.xlsx');
 plot(num(:,1), 1.1*(num(:,3)-min(num(:,3)))/(max(num(:,3))-min(num(:,3))),'gs',...
     'LineWidth',2,...
     'MarkerSize',10,...
     'MarkerEdgeColor','b',...
     'MarkerFaceColor',[0.5,0.5,0.5]);
-% plot(num(:,1), (num(:,4)-min(num(:,4)))/(max(num(:,4))-min(num(:,4))),'gs',...
+% plot(num(:,1), (num(:,7)-min(num(:,7)))/(max(num(:,7))-min(num(:,7))),'gs',...
 %     'LineWidth',2,...
 %     'MarkerSize',10,...
 %     'MarkerEdgeColor','g',...

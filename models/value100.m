@@ -3,9 +3,9 @@
 % estimate error of one run
 close all;clear all;  
 n=12;
-
-load all_data.txt;
-Data=all_data(:,[1,5]);
+all_data=xlsread('on_off_final.xlsx')
+% load all_data.txt;
+Data=all_data(:,[1,10]);
 % % Data(:,2)=Data(:,2)-Data(40,2);
 % % Data((Data(:,2)<0),2)=0;
 Data(:,2)= (Data(:,2)-min(Data(:,2)))/(max(Data(:,2))-min(Data(:,2)));
@@ -46,7 +46,7 @@ Y0=zeros(1,n);
 Y0(1)=A_1;
 Y0(12)=0.0000025;
 
-t_range=linspace(0,48,48); 
+t_range=linspace(0,75,76); 
 [t_val,Y_val]=ode23s(@lee_ode100,t_range,Y0,[],n,theta);
 
 signalON=Y_val(:,n)*10000;

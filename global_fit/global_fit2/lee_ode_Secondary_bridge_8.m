@@ -1,8 +1,8 @@
 % Final code
-function dA_dt=lee_ode_Secondary_bridge(t,A,n,theta)
+function dA_dt=lee_ode_Secondary_bridge_8(t,A,n,theta)
 dA_dt=zeros(size(A));
 % ODE for on pathway
-if (t<5)    
+if (t<=8)    
  % First order derivatives of i-mer concentrations
 Jnu=zeros(size(A)); % Flux of i-th nucleation reaction 
 Jfb=zeros(size(A)); % Flux of i-th fibrillation reaction
@@ -38,7 +38,7 @@ end
 end
 
 % ODE for combime on-off pathway
-if (t>=5)
+if (t>8)
 Jonnu=zeros(size(A));
 Jonfb=zeros(size(A));
 Joffnu=zeros(size(A));

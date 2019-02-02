@@ -111,7 +111,7 @@ ratio(end)
 plot(t_range, signal, '-r', 'LineWidth',2)
 hold on
 load all_data.txt;
-X=all_data(:,[1,6]);
+X=all_data(:,[1,2]);
 plot(X(:,1), X(:,2),'--*g')
 xlabel('Time')
 ylabel('Normalized ThT')

@@ -1,44 +1,9 @@
 % Final code
 function dA_dt=lee_ode_Secondary_bridge(t,A,n,theta)
 dA_dt=zeros(size(A));
-% ODE for on pathway
-if (t<5)    
- % First order derivatives of i-mer concentrations
-Jnu=zeros(size(A)); % Flux of i-th nucleation reaction 
-Jfb=zeros(size(A)); % Flux of i-th fibrillation reaction
-% The following is the list of rate constants % Forward rate constant of insulin hexamer dissociation
-knu=ones(n,1)*theta(1); % First foward nucleation rate constants
-% for i=1:n-1
-%  knu(i)=theta(1)/2*(1+i^(-1/3)); % Correct knu(i) by Stokes-Einstein Eq.
-% end
-knu_=ones(n,1)*theta(2); % Reverse nucleation constants
-knu_(11)=0;
-kfb=ones(n,1)*theta(3); % First forward fibrillation rate constant
-% for i=1:n-1
-%  kfb(i)=theta(2)*i^(-1/3); % Correct kfb(i) by Stokes-Einstein Eq.
-% end
-kfb_=ones(n,1)*theta(4); % Reverse fibrillation rate constant
-% Definitions of reaction fluxes Jhex, Jnu, and Jfb % The flux of hexamer decomposition reaction
-
-
-for i=1:11
- Jnu(i)=knu(i)*A(1)*A(i)-knu_(i)*A(i+1); % The flux of i-mer nucleation rxn
- Jfb(i)=kfb(i)*A(12)*A(i)-kfb_(i)*A(12); % The flux of i-mer elongation rxn
-end
-% There are n+1 equations representing the conc. change of n+1 species
-dA_dt(1)=-sum(Jnu(1:11))-Jnu(1)-Jfb(1); % Derivative of monomer conc.
-for i=2:11 % from dimer to (n-1)-mer
- dA_dt(i)=-Jnu(i)+Jnu(i-1)-Jfb(i); % Derivatives of oligomer concentrations
-end
-dA_dt(12)=Jnu(11); % Derivative of fibril concentration
-for i=13:n
-    dA_dt(i)=0;
-end
-
-end
 
 % ODE for combime on-off pathway
-if (t>=5)
+
 Jonnu=zeros(size(A));
 Jonfb=zeros(size(A));
 Joffnu=zeros(size(A));
@@ -147,7 +112,5 @@ dA_dt(25)=Joffls(24)-Jfag;
 dA_dt(26)=4*Jfag;
 dA_dt(n)=-Jcon+kk;
 
-
 end
 
-end
