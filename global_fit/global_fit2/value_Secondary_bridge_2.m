@@ -1,7 +1,7 @@
 % combine off and on pathway  with perterbation
 
 % reading experimental data
-all_data=xlsread('on_off_final.xlsx')
+all_data=xlsread('on_off_final.xlsx');
 
 %parameters
 n=27;
@@ -14,21 +14,21 @@ con=0.35e7;
 don=1e-3;
 %off pathway rate constant
 x=80e-1;
-y =0e-1;
-z=100e-1;
-zz=1e-2; 
+y =1e-1;
+z=140e-1;
+zz=10e-1; 
 r1=1e6;
 s1=2e-1;
 f1=1e5;
 f2=5e-3;
-p1=5e2;
+p1=5e3;
 p2=6e-1;
 %bridge rate constant
 swiF=0;
 swiB=0;
 %fatty acid concentration
 A_1=0.25;
-Eeff=0.11;
+Eeff=0.50;
 
 % call ode 
 theta=[aon,bon,con,don,x,y,z,zz,r1,s1,f1,f2,p1,p2,swiF,swiB]; 
@@ -92,7 +92,7 @@ Y0(n)=Eeff;
 % Y0(12)=5e-6;
 t_range=linspace(0,endS,endS+1); 
 [t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge_8,t_range,Y0,[],n,theta);
-Y_val([1:1:endS+1],[1 2 4 12 13  21  25 26 27]);
+Y_val([1:5:endS+1],[1 2 4 12 13  21  25 26 27])
 
 %claculate signal
 signalON=Y_val(:,n)*0;
@@ -190,7 +190,7 @@ Y0=zeros(1,n);
 Y0(1)=A_1;
 Y0(12)=0;
 Y0(n)=Eeff;
-
+endS=48;
 t_range=linspace(0,endS,endS+1); 
 [t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge,t_range,Y0,[],n,theta);
 Y_val([1:1:endS+1],[1 2 4 12 13  21  25 26 27]);
@@ -223,8 +223,8 @@ signal = (signal - min(signal))/(max(signal) - min(signal));
 %plot
 plot(t_range, signal, '-g', 'LineWidth',2)
 hold on
-all_data=xlsread('on_off_final.xlsx')
-X=all_data(:,[1,3]);
+all_data=xlsread('on_off_final.xlsx');
+X=all_data(1:260,[1,3]);
 
 plot(X(:,1), (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2))),'sg',...
     'LineWidth',2,...
@@ -247,6 +247,7 @@ Y0=zeros(1,n);
 Y0(1)=A_1;
 Y0(12)=0;
 
+endS=75
 t_range=linspace(0,endS, endS+1); 
 [t_val,Y_val]=ode23s(@lee_ode100,t_range,Y0,[],n,theta);
 
