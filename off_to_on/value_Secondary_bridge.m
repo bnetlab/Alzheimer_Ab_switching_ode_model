@@ -5,13 +5,13 @@
 perS=5;
 perE=40;
 dilu=5;
-tht=250000;
+tht=2000000;
 n=27;
 
 % on pathway rate constant
-aon=0.10;
+aon=0.04;
 bon=0.035;
-con=0.35e7;
+con=0.35e8;
 don=1e-3;
 %off pathway rate constant
 x=50e-1;
@@ -56,17 +56,14 @@ Y_val=[Y_val1;Y_val2];
 t_range2=t_range2+perS;
 t_range=[t_range1 t_range2];
 
-Y_val([1:1:perE],[1 4 12 13  21  26 27])
-
+Y_val([1:1:perE],[1 4 12 13  21  26 27]);
 Y_val=[Y_val1;dilu.*Y_val2];
+
 %claculate signal
 signalON=Y_val(:,n)*0;
 signalOFF=Y_val(:,n)*0;
 signalON=signalON + Y_val(:,12)*tht;
 
-% for i=13:21
-%     signalOFF=signalOFF+Y_val(:,i).*(i-9);
-% end
 
 signalOFF=signalOFF+18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
 signal=signalON+signalOFF;
@@ -84,7 +81,7 @@ plot(num(:,1), 1.1*(num(:,3)-min(num(:,3)))/(max(num(:,3))-min(num(:,3))),'gs',.
     'MarkerFaceColor',[0.5,0.5,0.5]);
 
 
-tht=700000;
+tht=8000000;
 perS=24;
 perE=40;
 dilu=5;

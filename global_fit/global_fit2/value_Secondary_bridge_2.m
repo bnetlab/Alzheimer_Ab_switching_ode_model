@@ -6,14 +6,14 @@ all_data=xlsread('on_off_final.xlsx');
 %parameters
 n=27;
 endS=75;
-tht=20000;
+tht=20000000;
 % on pathway rate constant
 aon=0.04;
 bon=0.035;
-con=0.35e7;
+con=0.35e8;
 don=1e-3;
 %off pathway rate constant
-x=80e-1;
+x=50e-1;
 y =1e-1;
 z=140e-1;
 zz=10e-1; 
@@ -82,52 +82,52 @@ ylabel('Normalized ThT')
 %md=fitlm(signal(1:end),X([1:6:end],2))
 
 
-% fit 3
-% call ode 
-theta=[aon,bon,con,don,x,y,z,zz,r1,s1,f1,f2,p1,p2,swiF,swiB]; 
-Y0=zeros(1,n); 
-Y0(1)=A_1;
-Y0(12)=0;
-Y0(n)=Eeff;
-% Y0(12)=5e-6;
-t_range=linspace(0,endS,endS+1); 
-[t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge_8,t_range,Y0,[],n,theta);
-Y_val([1:5:endS+1],[1 2 4 12 13  21  25 26 27])
-
-%claculate signal
-signalON=Y_val(:,n)*0;
-signalOFF=Y_val(:,n)*0;
-signalON=signalON + Y_val(:,12)*tht;
-signalOFF=signalOFF+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
-% for i=13:20
-% signalOFF=signalOFF + Y_val(:,i).*(i-9);
+% % fit 3
+% % call ode 
+% theta=[aon,bon,con,don,x,y,z,zz,r1,s1,f1,f2,p1,p2,swiF,swiB]; 
+% Y0=zeros(1,n); 
+% Y0(1)=A_1;
+% Y0(12)=0;
+% Y0(n)=Eeff;
+% % Y0(12)=5e-6;
+% t_range=linspace(0,endS,endS+1); 
+% [t_val,Y_val]=ode23s(@lee_ode_Secondary_bridge_8,t_range,Y0,[],n,theta);
+% Y_val([1:5:endS+1],[1 2 4 12 13  21  25 26 27])
+% 
+% %claculate signal
+% signalON=Y_val(:,n)*0;
+% signalOFF=Y_val(:,n)*0;
+% signalON=signalON + Y_val(:,12)*tht;
+% signalOFF=signalOFF+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
+% % for i=13:20
+% % signalOFF=signalOFF + Y_val(:,i).*(i-9);
+% % end
+% signal=signalON+signalOFF;
+% signal = (signal - min(signal))/(max(signal) - min(signal));
+% 
+% oCon= 0;
+% for i=2:11
+% oCon= oCon + Y_val(:,i)*i;
 % end
-signal=signalON+signalOFF;
-signal = (signal - min(signal))/(max(signal) - min(signal));
-
-oCon= 0;
-for i=2:11
-oCon= oCon + Y_val(:,i)*i;
-end
-for i=13:21
-oCon= oCon + Y_val(:,i)*(i-9);
-end
-oCon=oCon+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
-aCon=Y_val(:,1);
-ratio=oCon./aCon;
-ratio(end);
-
-%plot
-plot(t_range, signal, '-b', 'LineWidth',2)
-hold on
-X=all_data(:,[1,7]);
-plot(X(:,1), (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2))),'sb',...
-    'LineWidth',2,...
-    'MarkerSize',8,...
-    'MarkerEdgeColor','b',...
-    'MarkerFaceColor',[0.5,0.5,0.5])
-xlabel('Time')
-ylabel('Normalized ThT')
+% for i=13:21
+% oCon= oCon + Y_val(:,i)*(i-9);
+% end
+% oCon=oCon+ 18*Y_val(:,22)+36*Y_val(:,23)+54*Y_val(:,24)+72*Y_val(:,25)+18*Y_val(:,26);
+% aCon=Y_val(:,1);
+% ratio=oCon./aCon;
+% ratio(end);
+% 
+% %plot
+% plot(t_range, signal, '-b', 'LineWidth',2)
+% hold on
+% X=all_data(:,[1,7]);
+% plot(X(:,1), (X(:,2) - min(X(:,2)))/(max(X(:,2)) - min(X(:,2))),'sb',...
+%     'LineWidth',2,...
+%     'MarkerSize',8,...
+%     'MarkerEdgeColor','b',...
+%     'MarkerFaceColor',[0.5,0.5,0.5])
+% xlabel('Time')
+% ylabel('Normalized ThT')
 
 %md=fitlm(signal(1:end),X([1:6:end],2))
 
