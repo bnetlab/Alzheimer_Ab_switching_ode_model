@@ -38,8 +38,7 @@ n*a2*B1e^(n-1),0,-(a1+a4+(m/n)^2*b3*Bne^((m/n)-1)),b4,(m/n)*a5,0;
 0,0,(m/n)*b3*Bne^((m/n)-1),0,-a5,0;
 0,0,0,(m/n)*a6*Bnpe^((m/n)-1),0,-b5]
 E=eig(B)
-[V,D]=eig(B) %the eigenvectors are the columns of the first matrix associated with the diagonal
-values of 2nd.
+[V,D]=eig(B) %the eigenvectors are the columns of the first matrix associated with the diagonal values of 2nd.
 % figure(2)
 % plot(a3,E(2),'b*')
 % hold on
