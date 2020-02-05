@@ -9,7 +9,7 @@ n=7;
 endS=75;
 tht=20000000;
 % on pathway rate constant
-alpha2=0.004;
+alpha2=0.01;
 alpha1=0.035;
 beta3=0.35e8;
 alpha5=1e-3;
