@@ -11,10 +11,10 @@ function dA_dt=lee_ode100(t,A,n,theta)
 
 dA_dt=zeros(size(A)); % First order derivatives of i-mer concentrations
 
-knu=theta(1); % First foward nucleation rate constants
-knu_=theta(2); % Reverse nucleation constants
-kfb=theta(5); % First forward fibrillation rate constant
-kfb_=theta(9); % Reverse fibrillation rate constant
+knu=theta(2); % First foward nucleation rate constants
+knu_=theta(1); % Reverse nucleation constants
+kfb=theta(9); % First forward fibrillation rate constant
+kfb_=theta(5); % Reverse fibrillation rate constant
 
 
 Jnu=knu*A(1)-knu_*A(2); % The flux of i-mer nucleation rxn
