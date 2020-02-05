@@ -10,25 +10,23 @@ function dA_dt=lee_ode100(t,A,n,theta)
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 
 dA_dt=zeros(size(A)); % First order derivatives of i-mer concentrations
-Jnu=zeros(size(A)); % Flux of i-th nucleation reaction 
-Jfb=zeros(size(A)); % Flux of i-th fibrillation reaction
-% The following is the list of rate constants % Forward rate constant of insulin hexamer dissociation
-knu=ones(n,1)*theta(1); % First foward nucleation rate constants
-knu_=ones(n,1)*theta(2); % Reverse nucleation constants
-knu_(11)=0;
-kfb=ones(n,1)*theta(3); % First forward fibrillation rate constant
-kfb_=ones(n,1)*theta(4); % Reverse fibrillation rate constant
-% Definitions of reaction fluxes Jhex, Jnu, and Jfb % The flux of hexamer decomposition reaction
 
-for i=1:11
- Jnu(i)=knu(i)*A(1)*A(i)-knu_(i)*A(i+1); % The flux of i-mer nucleation rxn
- Jfb(i)=kfb(i)*A(n)*A(i)-kfb_(i)*A(n); % The flux of i-mer elongation rxn
-end
+knu=theta(1); % First foward nucleation rate constants
+knu_=theta(2); % Reverse nucleation constants
+kfb=theta(5); % First forward fibrillation rate constant
+kfb_=theta(9); % Reverse fibrillation rate constant
+
+
+Jnu=knu*A(1)-knu_*A(2); % The flux of i-mer nucleation rxn
+Jfb=kfb*A(2)-kfb_*A(3); % The flux of i-mer elongation rxn
+
 % There are n+1 equations representing the conc. change of n+1 species
-dA_dt(1)=-sum(Jnu(1:11))-Jnu(1)-Jfb(1); % Derivative of monomer conc.
-for i=2:11 % from dimer to (n-1)-mer
- dA_dt(i)=-Jnu(i)+Jnu(i-1)-Jfb(i); % Derivatives of oligomer concentrations
-end
-dA_dt(n)=Jnu(11); % Derivative of fibril concentration
+dA_dt(1)=-Jnu;
+dA_dt(2)=Jnu-Jfb;
+dA_dt(3)=Jfb;
+dA_dt(4)=0;
+dA_dt(5)=0;
+dA_dt(6)=0;
+dA_dt(7)=0;
 end
 
